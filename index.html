@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/favicon.ico">
+  <style>
+    .wrapper {}
+    h1 {
+      text-align: center;
+    }
+    .container {}
+    .container_button {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .button_create {}
+    .btn-render {
+      padding: 5px 10px;
+    }
+    .btn {
+      margin: 0 5px;
+    }
+    .render_sings {
+      overflow-x: auto;
+    }
+    table {
+      padding: 0;
+      margin: 0;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+    }
+    .barrie {
+      width: 100%;
+      height: 1.5px;
+      margin: 15px 0;
+      background-color: black;
+    }
+    tr {
+      margin-bottom: 10px;
+    }
+    .show {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0,0,0.2);
+      display: flex;
+      justify-content: center;
+    }
+    .btn-menu {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+    .menu {
+      position: absolute;
+      width: 90%;
+      top: 100px;
+      border-radius: 5px;
+      padding: 15px 5px 10px;
+      background-color: white;
+    }
+  </style>
+  <title>HNgoc Website || Edit List Sing</title>
+</head>
+<body>
+  <div class='wrapper'>
+    <h1>Edit Sing</h1>
+    <div class='container'>
+      <div class='container_button'>
+        <div onclick='handleShowAndClose("create")' class='button_create btn'>
+          <button>Create</button>
+        </div>
+      </div>
+    </div>
+    <div class='barrie top'></div>
+    <div class='render_sings'></div>
+    <div class='barrie bottom'></div>
+  </div>
+  <div class='showRender'></div>
+  <script>
+    const URL = 'http://localhost:8081';
+    const showRender = document.querySelector('.showRender');
+    const menucre = document.querySelector('.show');
+    let showModel = '';
+    const handleShowAndClose = (type) => {
+      if (type === 'create') {
+        showModel = `
+        <div class=show>
+        <div class=menu>
+        <div class=btn-menu>
+        <button onclick=handleShowAndClose()>X</button>
+        </div>
+        <h2 class=title>Create sing</h2>
+        </div>
+        </div>
+        `;
+      } else if (type === 'update') {} else if (type === 'delete') {} else {
+        showModel = '';
+      }
+      showRender.innerHTML = showModel;
+      console.log(showRender)
+    }
+    const getSings = async() => {
+      const fetchSings = await fetch(URL+'/sings');
+      const sings = await fetchSings.json();
+      return sings;
+    }
+    const createSingModel = async() => {
+      const sings = await getSings();
+      const singModel = sings.sings.map((item, index) => (
+        `<tr>
+        <td>${item.name}</td>
+        <td>${item.singer}</td>
+        <td><img width=50 alt=${item.name} src=${item.image}></td>
+        <td><audio controls src=${item?.path}></td>
+        <td><button class='delete-btn btn-render'>Delete</button></td>
+        <td><button class='update-btn btn-render'>Update</button></td>
+        </tr>`
+      )).join('');
+      renderSing(singModel);
+    }
+    const renderSing = async(singModel) => {
+      const singRender = `
+      <table>
+      <tr>
+      <th>Name</th>
+      <th>Singer</th>
+      <th>Image</th>
+      <th>Path</th>
+      <th></th>
+      <th></th>
+      </tr>
+      ${singModel}
+      </table>
+      `;
+      const containerSing = document.querySelector('.render_sings');
+      containerSing.innerHTML = singRender
+    }
+    createSingModel();
+  </script>
+</body>
+</html>
