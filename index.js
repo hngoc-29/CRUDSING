@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }))
-const white_list = ['http://localhost:8158', 'http://hngoc.kesug.com', 'https://hngoc.kesug.com'];
+const white_list = ['http://hngoc.kesug.com', 'https://hngoc.kesug.com'];
 const corsOptions = (req, callback) => {
   const origin = req.header('Origin');
   if (white_list.includes(origin)) {
@@ -24,7 +24,7 @@ const corsOptions = (req, callback) => {
     callback(new Error('Not allowed by CORS'));
   }
 };
-app.use(cors(/*corsOptions*/));
+app.use(cors(corsOptions));
 //mongo db
 const singSchema = new Schema( {
   name: String,
