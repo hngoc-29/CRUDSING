@@ -11,18 +11,9 @@ const {
   Schema
 } = mongoose;
 const app = express();
+app.use(cors())
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-const white_list = ['http://hngoc.kesug.com', 'https://hngoc.kesug.com'];
-const corsOptions = (req, callback) => {
-  const origin = req.header('Origin');
-  if (white_list.includes(origin)) {
-    callback(null, { origin: true });
-  } else {
-    callback(new Error('Not allowed by CORS'));
-  }
-};
-app.use(cors(corsOptions));
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
 //mongo db
 const singSchema = new Schema( {
   name: String,
