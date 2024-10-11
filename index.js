@@ -17,7 +17,7 @@ app.use(express.json({
 }));
 app.use(express.urlencoded({
   limit: '50mb', extended: true
-}))
+}));
 app.use(cors( {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -45,7 +45,8 @@ const storage = new CloudinaryStorage( {
   },
 });
 const upload = multer( {
-  storage
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 },
 });
 //route upload
 app.post('/upload', upload.single('file'), async(req, res)=> {
