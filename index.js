@@ -14,6 +14,12 @@ const app = express();
 app.use(cors())
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
+app.use(cors({
+    origin: 'https://hngoc.kesug.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.options('/upload', cors());
 //mongo db
 const singSchema = new Schema( {
   name: String,
