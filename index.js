@@ -11,18 +11,18 @@ const {
   Schema
 } = mongoose;
 const app = express();
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-const white_list = ['http://hngoc.kesug.com', 'https://hngoc.kesug.com'];
-const corsOptions = (req, callback) => {
-  const origin = req.header('Origin');
-  if (white_list.includes(origin)) {
-    callback(null, { origin: true });
-  } else {
-    callback(new Error('Not allowed by CORS'));
-  }
-};
-app.use(cors(corsOptions));
+app.use(cors())
+app.use(express.json({
+  limit: '50mb'
+}));
+app.use(express.urlencoded({
+  limit: '50mb', extended: true
+}))
+app.use(cors( {
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.options('/upload', cors());
 //mongo db
 const singSchema = new Schema( {
   name: String,
@@ -138,4 +138,4 @@ app.put('/update/file/:id', upload.single('file'), async(req, res) => {
   }
 })
 mongoose.connect(process.env.DB_URL).then(()=>console.log('Connecting database')).catch(err => console.log(err))
-app.listen(8081, ()=> console.log('Server is running'))
+app.listen(8080, ()=> console.log('Server is running'))
