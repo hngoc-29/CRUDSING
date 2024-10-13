@@ -48,6 +48,21 @@ const upload = multer( {
   storage,
   limits: { fileSize: 50 * 1024 * 1024 },
 });
+//route upload path link
+app.post('/upload/link', async(req, res)=>{
+  try {
+    const newSong = new singModel({
+      name: req.body.name,
+      singer: req.body.singer,
+      image: req.body.image,
+      path: req.body.path,
+    });
+    await newSong.save();
+    res.status(200).json({status: 'success', song: newSong})
+  } catch(err){
+    res.status(500).json('Upload error')
+  }
+})
 //route upload
 app.post('/upload', upload.single('file'), async(req, res)=> {
   try {
