@@ -51,14 +51,14 @@ const upload = multer( {
 //route upload path link
 app.post('/upload/link', async(req, res)=>{
   try {
-    const newSong = new singModel({
-      name: req.body.name,
-      singer: req.body.singer,
-      image: req.body.image,
-      path: req.body.path,
+    const newSing = new singModel({
+      name: req.body?.name,
+      singer: req.body?.singer,
+      image: req.body?.image,
+      path: req.body?.path,
     });
-    await newSong.save();
-    res.status(200).json({status: 'success', song: newSong})
+    await newSing.save();
+    res.status(200).json({status: 'success', song: newSing})
   } catch(err){
     res.status(500).json('Upload error')
   }
